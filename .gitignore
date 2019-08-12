@@ -1,0 +1,5 @@
+*.out
+*.sw*
+*.*.sw*
+.DS_Store
+*.a
