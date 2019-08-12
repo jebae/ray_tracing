@@ -6,13 +6,13 @@ KNRM=\033[0m
 COUNTER = 0
 
 define compile_obj
-	printf "$(KGRN)[ray_tracing]$(KNRM) compile $(1)\n"
+	@printf "$(KGRN)[ray_tracing]$(KNRM) compile $(1)\n"
 	$(CC) $(CFLAGS) $(INCLUDES) -c $(1) -o $(2)
 	$(eval COUNTER=$(shell echo $$(($(COUNTER) + 1))))
 endef
 
 # compiler
-CC = gcc
+CC = g++
 
 # lib name
 NAME = librt.a
@@ -30,10 +30,17 @@ CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I ./$(INCDIR)
 
 # srcs
+SRC_MATH = vec4.cpp
 
 # objs
+OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
 
 # compile objs
+HEADERS = $(INCDIR)/ray_tracing.hpp\
+	$(INCDIR)/vec4.hpp\
+
+$(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
 
 # build
 all : $(NAME)

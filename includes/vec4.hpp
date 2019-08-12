@@ -2,9 +2,6 @@
 # define VEC4_HPP
 
 # include <vector>
-# include <iostream>
-
-using namespace std;
 
 class Vec4
 {
@@ -14,7 +11,8 @@ private:
 public:
 	Vec4(void);
 	Vec4 operator + (Vec4 &factor);
+	float& operator [] (int i);
 	friend ostream & operator << (ostream &os, Vec4 &vec4);
-}
+};
 
 #endif
