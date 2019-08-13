@@ -1,4 +1,4 @@
-#include "__test__.hpp"
+#include "__test_utils__.hpp"
 
 void UnitTest::show_success_msg()
 {
@@ -14,7 +14,7 @@ void UnitTest::show_fail_msg()
 	cout << " (" << subject << ")" << KNRM << endl;
 }
 
-void UnitTest::set_subject(string arg_subject)
+string& UnitTest::set_subject(void)
 {
-	subject = arg_subject;
+	return (subject);
 }

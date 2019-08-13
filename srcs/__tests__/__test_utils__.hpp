@@ -2,6 +2,7 @@
 # define __TEST_UTILS__HPP
 
 # include <iostream>
+# include <sstream>
 
 # define KRED "\x1B[31m"
 # define KGRN "\x1B[32m"
@@ -29,7 +30,7 @@ public:
 	: name(arg_name)
 	{}
 
-	void set_subject(string arg_subject);
+	string& set_subject(void);
 	template <typename T> int eq(T &a, T &b);
 	template <typename T> int neq(T &a, T &b);
 };

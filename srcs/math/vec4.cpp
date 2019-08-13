@@ -20,11 +20,24 @@ float& Vec4::operator [] (int i)
 	return (vec[i]);
 }
 
-ostream & operator << (ostream &os, Vec4 &vec4)
+bool Vec4::operator == (Vec4 &factor)
 {
-	cout << "Vec4[";
 	for (int i=0; i < 4; i++)
-		cout << vec4.vec[i] << ", ";
-	cout << "]" << endl;
+	{
+		if (vec[i] != factor[i])
+			return (false);
+	}
+	return (true);
+}
+
+ostream& operator << (ostream &os, Vec4 &vec4)
+{
+	int i;
+
+	os << "Vec4[";
+	for (i=0; i < 3; i++)
+		os << vec4[i] << ", ";
+	os << vec4[i];
+	os << "]";
 	return (os);
 }

@@ -3,4 +3,4 @@ g++\
 	-I ./includes\
 	-I ./srcs/__tests__\
 	-L . -lrt\
-	srcs/__tests__/testmain.cpp
+	srcs/__tests__/*.cpp

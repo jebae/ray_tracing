@@ -12,7 +12,8 @@ public:
 	Vec4(void);
 	Vec4 operator + (Vec4 &factor);
 	float& operator [] (int i);
-	friend ostream & operator << (ostream &os, Vec4 &vec4);
+	bool operator == (Vec4 &factor);
+	friend ostream& operator << (ostream &os, Vec4 &vec4);
 };
 
 #endif
