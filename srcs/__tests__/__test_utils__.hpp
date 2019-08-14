@@ -22,8 +22,8 @@ private:
 	string name;
 	string subject;
 
-	void show_success_msg();
-	void show_fail_msg();
+	void show_success_msg(string func_name);
+	void show_fail_msg(string func_name);
 
 public:
 	UnitTest(string arg_name)
@@ -31,35 +31,35 @@ public:
 	{}
 
 	string& set_subject(void);
-	template <typename T> int eq(T &a, T &b);
-	template <typename T> int neq(T &a, T &b);
+	template <typename T> int eq(T &a, T b);
+	template <typename T> int neq(T &a, T b);
 };
 
-template <typename T> int UnitTest::eq(T &a, T &b)
+template <typename T> int UnitTest::eq(T &a, T b)
 {
 	if (a == b)
 	{
-		show_success_msg();
+		show_success_msg("eq");
 		return (TEST_SUCCESS);
 	}
 	else
 	{
-		show_fail_msg();
+		show_fail_msg("eq");
 		cout << KRED << "\t-> " << a << " != " << b << KNRM << endl;
 		return (TEST_FAIL);
 	}
 }
 
-template <typename T> int UnitTest::neq(T &a, T &b)
+template <typename T> int UnitTest::neq(T &a, T b)
 {
 	if (a != b)
 	{
-		show_success_msg();
+		show_success_msg("neq");
 		return (TEST_SUCCESS);
 	}
 	else
 	{
-		show_fail_msg();
+		show_fail_msg("neq");
 		cout << KRED << "\t-> " << a << " == " << b << KNRM << endl;
 		return (TEST_FAIL);
 	}
