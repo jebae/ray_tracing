@@ -8,6 +8,8 @@ private:
 
 public:
 	TestVec4(void);
+	void test_construct_case1(void);
+	void test_construct_case2(void);
 	void test_assign_case1(void);
 	void test_cout_case1(void);
 	void test_equal_case1(void);
@@ -26,6 +28,28 @@ public:
 TestVec4::TestVec4(void)
 : test(UnitTest("Vec4"))
 {}
+
+void TestVec4::test_construct_case1(void)
+{
+	test.set_subject() ="default value has to be assigned for constructor";
+	Vec4 v;
+
+	test.eq(v[0], 0.0f);
+	test.eq(v[1], 0.0f);
+	test.eq(v[2], 0.0f);
+	test.eq(v[3], 1.0f);
+}
+
+void TestVec4::test_construct_case2(void)
+{
+	test.set_subject() ="passed value has to be assigned for constructor";
+	Vec4 v({{1.0f, 2.0f, 3.0f}});
+
+	test.eq(v[0], 1.0f);
+	test.eq(v[1], 2.0f);
+	test.eq(v[2], 3.0f);
+	test.eq(v[3], 1.0f);
+}
 
 void TestVec4::test_assign_case1(void)
 {
@@ -216,17 +240,20 @@ void TestVec4::test_normalize_case1(void)
 	test.set_subject() = "vector has to be normalized";
 	Vec4 vec;
 	float norm;
+	float precision = 1000000;
 
 	vec[0] = 3.141592234f;
 	vec[1] = -0.89f;
 	vec[2] = 100.0f;
 	vec.normalize();
-	norm = vec.norm();
+	norm = round(vec.norm() * precision) / precision;
 	test.eq(norm, 1.0f);
 }
 
 void TestVec4::all(void)
 {
+	test_construct_case1();
+	test_construct_case2();
 	test_assign_case1();
 	test_cout_case1();
 	test_equal_case1();

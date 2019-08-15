@@ -10,7 +10,7 @@ private:
 	vector<float> vec;
 
 public:
-	Vec4(void);
+	Vec4(float *arr = nullptr);
 	float& operator [] (int i);
 	bool operator == (Vec4 &factor);
 	Vec4 operator + (Vec4 &factor);

@@ -1,8 +1,11 @@
 #include "ray_tracing.hpp"
 
-Vec4::Vec4(void)
-: vec(vector<float>(4, 0.0f))
+Vec4::Vec4(float *arr)
 {
+	if (arr == nullptr)
+		vec = vector<float>(4, 0.0f);
+	else
+		vec.assign(arr, arr + 3);
 	vec[3] = 1.0f;
 }
 
