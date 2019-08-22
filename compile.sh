@@ -1,5 +1,5 @@
 g++\
-	-Wall -Wextra -Werror\
+	-Wall -Wextra -Werror -std=c++11\
 	-I ./includes\
 	-I ./srcs/__tests__\
 	-L . -lrt\

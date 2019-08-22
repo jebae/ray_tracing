@@ -1,11 +1,10 @@
-#include "ray_tracing.hpp"
+#include "vec4.hpp"
 
-Vec4::Vec4(float *arr)
+Vec4::Vec4(vector<float> vec3)
 {
-	if (arr == nullptr)
-		vec = vector<float>(4, 0.0f);
-	else
-		vec.assign(arr, arr + 3);
+	assert(vec3.size() == 3);
+	vec = vector<float>(4);
+	vec.assign(vec3.begin(), vec3.end());
 	vec[3] = 1.0f;
 }
 

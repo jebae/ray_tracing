@@ -25,19 +25,20 @@ OBJDIR = objs
 INCDIR = includes
 
 # compiler options
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -std=c++14
 
 INCLUDES = -I ./$(INCDIR)
 
 # srcs
-SRC_MATH = vec4.cpp
+SRC_MATH = vec4.cpp\
+	camera.cpp\
 
 # objs
 OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
 
 # compile objs
-HEADERS = $(INCDIR)/ray_tracing.hpp\
-	$(INCDIR)/vec4.hpp\
+HEADERS = $(INCDIR)/vec4.hpp\
+	$(INCDIR)/camera.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)

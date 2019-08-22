@@ -1,10 +1,18 @@
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
 
+# include <iostream>
 # include "vec4.hpp"
+
+using namespace std;
 
 class Camera
 {
+private:
+	void set_z_axis(Vec4 &focus);
+	void set_x_axis(void);
+	void set_y_axis(void);
+
 public:
 	Vec4 pos;
 	Vec4 x_axis;
@@ -13,8 +21,6 @@ public:
 	float zoom;
 
 	Camera(Vec4 pos, Vec4 focus);
-	void set_z_axis(Vec4 focus);
-	void set_x_axis(void);
-}
+};
 
 #endif

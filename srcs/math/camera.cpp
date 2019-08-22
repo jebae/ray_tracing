@@ -1,13 +1,15 @@
-#include "ray_tracing.hpp"
+#include "camera.hpp"
 
-Camera::Camera(Vec4 arg_pos, Vec4 focus);
+Camera::Camera(Vec4 pos, Vec4 focus)
+: pos(pos)
 {
-	pos = arg_pos;
 	zoom = 1.0f;
-	// here
+	set_z_axis(focus);
+	set_x_axis();
+	set_y_axis();
 }
 
-void Camera::set_z_axis(Vec4 focus)
+void Camera::set_z_axis(Vec4 &focus)
 {
 	z_axis = focus - pos;
 	z_axis.normalize();
@@ -22,4 +24,10 @@ void Camera::set_x_axis(void)
 		return ;
 	x_axis = z_axis.cross(z_w);
 	x_axis.normalize();
+}
+
+void Camera::set_y_axis(void)
+{
+	y_axis = z_axis.cross(x_axis);
+	y_axis.normalize();
 }

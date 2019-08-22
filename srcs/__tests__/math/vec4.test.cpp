@@ -31,7 +31,7 @@ TestVec4::TestVec4(void)
 
 void TestVec4::test_construct_case1(void)
 {
-	test.set_subject() ="default value has to be assigned for constructor";
+	test.set_subject() = "default value has to be assigned for constructor";
 	Vec4 v;
 
 	test.eq(v[0], 0.0f);
@@ -42,8 +42,8 @@ void TestVec4::test_construct_case1(void)
 
 void TestVec4::test_construct_case2(void)
 {
-	test.set_subject() ="passed value has to be assigned for constructor";
-	Vec4 v({{1.0f, 2.0f, 3.0f}});
+	test.set_subject() = "passed value has to be assigned for constructor";
+	Vec4 v(vector<float>{1.0f, 2.0f, 3.0f});
 
 	test.eq(v[0], 1.0f);
 	test.eq(v[1], 2.0f);
@@ -53,7 +53,7 @@ void TestVec4::test_construct_case2(void)
 
 void TestVec4::test_assign_case1(void)
 {
-	test.set_subject() ="[] operator has to work";
+	test.set_subject() = "[] operator has to work";
 	Vec4 v;
 	float arr[3] = {3.2f, 32.0f, -1.0f};
 
