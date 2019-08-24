@@ -9,6 +9,8 @@ using namespace std;
 
 class Vec4
 {
+friend class Camera;
+
 private:
 	vector<float> vec;
 
@@ -17,14 +19,18 @@ public:
 	float& operator [] (int i);
 	bool operator == (Vec4 &factor);
 	Vec4 operator + (Vec4 &factor);
+	Vec4& operator += (Vec4 &factor);
 	Vec4 operator - (Vec4 &factor);
+	Vec4& operator -= (Vec4 &factor);
+	Vec4 operator * (float scalar);
+	Vec4& operator *= (float scalar);
 	float dot(Vec4 &factor);
 	Vec4 cross(Vec4 &factor);
 	float norm(void);
 	void normalize(void);
 	friend ostream& operator << (ostream &os, Vec4 &vec4);
 	friend Vec4 operator * (float scalar, Vec4 &vec);
-	friend Vec4 operator * (Vec4 &vec, float scalar);
+	void for_each(function<void(float *)> fn);
 };
 
 #endif

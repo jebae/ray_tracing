@@ -1,14 +1,16 @@
 #include "__test_utils__.hpp"
 
-void UnitTest::show_success_msg(string func_name)
+void UnitTest::print_success_msg(string func_name)
 {
+	if (!print_success)
+		return ;
 	cout << KGRN << "[SUCCESS] " << KNRM;
 	cout << KYEL << "[" << func_name << "] " << KNRM;
 	cout << name;
 	cout << " (" << subject << ")" << KNRM << endl;
 }
 
-void UnitTest::show_fail_msg(string func_name)
+void UnitTest::print_fail_msg(string func_name)
 {
 	cout << KRED << "[FAILED] " << KNRM;
 	cout << KYEL << "[" << func_name << "] " << KNRM;
@@ -16,7 +18,7 @@ void UnitTest::show_fail_msg(string func_name)
 	cout << " (" << subject << ")" << KNRM << endl;
 }
 
-string& UnitTest::set_subject(void)
+void UnitTest::set_subject(string str)
 {
-	return (subject);
+	subject = str;
 }

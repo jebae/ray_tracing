@@ -4,7 +4,8 @@ Vec4::Vec4(vector<float> vec3)
 {
 	assert(vec3.size() == 3);
 	vec = vector<float>(4);
-	vec.assign(vec3.begin(), vec3.end());
+	for (int i=0; i < 3; i++)
+		vec[i] = vec3[i];
 	vec[3] = 1.0f;
 }
 
@@ -32,6 +33,13 @@ Vec4 Vec4::operator + (Vec4 &factor)
 	return (res);
 }
 
+Vec4& Vec4::operator += (Vec4 &factor)
+{
+	for (int i=0; i < 3; i++)
+		vec[i] += factor[i];
+	return (*this);
+}
+
 Vec4 Vec4::operator - (Vec4 &factor)
 {
 	Vec4 res;
@@ -39,6 +47,13 @@ Vec4 Vec4::operator - (Vec4 &factor)
 	for (int i=0; i < 3; i++)
 		res[i] = vec[i] - factor[i];
 	return (res);
+}
+
+Vec4& Vec4::operator -= (Vec4 &factor)
+{
+	for (int i=0; i < 3; i++)
+		vec[i] -= factor[i];
+	return (*this);
 }
 
 float Vec4::dot(Vec4 &factor)
@@ -96,11 +111,24 @@ Vec4 operator * (float scalar, Vec4 &vec)
 	return (res);
 }
 
-Vec4 operator * (Vec4 &vec, float scalar)
+Vec4 Vec4::operator * (float scalar)
 {
 	Vec4 res;
 
 	for (int i=0; i < 3; i++)
 		res[i] = scalar * vec[i];
 	return (res);
+}
+
+Vec4& Vec4::operator *= (float scalar)
+{
+	for (int i=0; i < 3; i++)
+		vec[i] *= scalar;
+	return (*this);
+}
+
+void Vec4::for_each(function<void(float *)> fn)
+{
+	for (int i=0; i < 3; i++)
+		fn(&(vec[i]));
 }

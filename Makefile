@@ -33,14 +33,28 @@ INCLUDES = -I ./$(INCDIR)
 SRC_MATH = vec4.cpp\
 	camera.cpp\
 
+SRC_RAY = ray_grid_props.cpp\
+
+SRC_OBJECT = object.cpp\
+
 # objs
 OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_RAY:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
 
 # compile objs
 HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/camera.hpp\
+	$(INCDIR)/ray.hpp\
+	$(INCDIR)/object.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/ray/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/object/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 # build
