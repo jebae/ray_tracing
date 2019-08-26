@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <sstream>
+# include <string>
 
 # define KRED "\x1B[31m"
 # define KGRN "\x1B[32m"

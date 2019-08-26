@@ -1,5 +1,6 @@
 #include "__test_utils__.hpp"
 #include "vec4.hpp"
+#include <cmath>
 
 class TestVec4
 {

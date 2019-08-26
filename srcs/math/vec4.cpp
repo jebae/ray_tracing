@@ -1,4 +1,10 @@
+#include <cassert>
+#include <iostream>
+#include <cmath>
+#include <functional>
 #include "vec4.hpp"
+
+using namespace std;
 
 Vec4::Vec4(vector<float> vec3)
 {

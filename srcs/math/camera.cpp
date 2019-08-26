@@ -1,4 +1,5 @@
 #include "camera.hpp"
+#include <cmath>
 
 Camera::Camera(Vec4 pos, Vec4 focus)
 : pos(pos)

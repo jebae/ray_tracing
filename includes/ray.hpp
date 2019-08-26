@@ -1,6 +1,7 @@
 #ifndef RAY_HPP
 # define RAY_HPP
 
+# include <cmath>
 # include "vec4.hpp"
 # include "camera.hpp"
 

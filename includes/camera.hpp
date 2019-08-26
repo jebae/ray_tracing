@@ -1,10 +1,7 @@
 #ifndef CAMERA_HPP
 # define CAMERA_HPP
 
-# include <iostream>
 # include "vec4.hpp"
-
-using namespace std;
 
 class Camera
 {

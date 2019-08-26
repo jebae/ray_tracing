@@ -1,5 +1,7 @@
 #include "__test_utils__.hpp"
 
+using namespace std;
+
 void UnitTest::print_success_msg(string func_name)
 {
 	if (!print_success)

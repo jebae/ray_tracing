@@ -3,19 +3,17 @@
 
 # include <iostream>
 # include <vector>
-# include <cmath>
-
-using namespace std;
+# include <functional>
 
 class Vec4
 {
 friend class Camera;
 
 private:
-	vector<float> vec;
+	std::vector<float> vec;
 
 public:
-	Vec4(vector<float> vec3=vector<float>(3, 0.0f));
+	Vec4(std::vector<float> vec3=std::vector<float>(3, 0.0f));
 	float& operator [] (int i);
 	bool operator == (Vec4 &factor);
 	Vec4 operator + (Vec4 &factor);
@@ -28,9 +26,9 @@ public:
 	Vec4 cross(Vec4 &factor);
 	float norm(void);
 	void normalize(void);
-	friend ostream& operator << (ostream &os, Vec4 &vec4);
+	friend std::ostream& operator << (std::ostream &os, Vec4 &vec4);
 	friend Vec4 operator * (float scalar, Vec4 &vec);
-	void for_each(function<void(float *)> fn);
+	void for_each(std::function<void(float *)> fn);
 };
 
 #endif
