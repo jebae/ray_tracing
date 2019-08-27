@@ -25,7 +25,7 @@ OBJDIR = objs
 INCDIR = includes
 
 # compiler options
-CFLAGS = -Wall -Wextra -Werror -std=c++14
+CFLAGS = -Wall -Wextra -Werror -std=c++11
 
 INCLUDES = -I ./$(INCDIR)
 
@@ -34,19 +34,28 @@ SRC_MATH = vec4.cpp\
 	camera.cpp\
 
 SRC_RAY = ray_grid_props.cpp\
+	ray.cpp\
 
 SRC_OBJECT = object.cpp\
+	sphere.cpp\
+
+SRC_TRACE = trace_record.cpp\
+	tracer.cpp\
 
 # objs
 OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_RAY:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_TRACE:.cpp=.o))
 
 # compile objs
 HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/camera.hpp\
 	$(INCDIR)/ray.hpp\
 	$(INCDIR)/object.hpp\
+	$(INCDIR)/sphere.hpp\
+	$(INCDIR)/trace_record.hpp\
+	$(INCDIR)/tracer.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
@@ -55,6 +64,9 @@ $(OBJDIR)/%.o : $(SRCDIR)/ray/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/object/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/trace/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 # build
@@ -74,6 +86,9 @@ $(OBJDIR) :
 	@mkdir -p $(OBJDIR)
 
 # commands
+build_test : all
+	@$(CC) $(CFLAGS) $(INCLUDES) -I ./srcs/__tests__ -L . -lrt srcs/__tests__/*.cpp
+
 clean :
 	@rm -rf $(OBJS)
 

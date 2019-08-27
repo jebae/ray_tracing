@@ -1,11 +1,8 @@
 #include "__test_utils__.hpp"
 #include "object.hpp"
 
-class TestObject
+class TestObject : public UnitTest
 {
-private:
-	UnitTest test;
-
 public:
 	TestObject(bool print_success=false);
 	Object create_test_object(void);
@@ -13,7 +10,7 @@ public:
 };
 
 TestObject::TestObject(bool print_success)
-: test(UnitTest("Object", print_success))
+: UnitTest("Object", print_success)
 {}
 
 Object TestObject::create_test_object(void)

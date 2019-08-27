@@ -12,3 +12,16 @@ transparency(transparency),
 ior(ior),
 color(color)
 {}
+
+bool Object::intersect(Ray &ray, float &t)
+{
+	(void)(ray);
+	(void)(t);
+	return (false);
+}
+
+Vec4 Object::get_normal(Vec4 &point)
+{
+	(void)(point);
+	return (Vec4());
+}

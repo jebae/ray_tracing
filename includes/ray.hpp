@@ -26,6 +26,8 @@ class Ray
 public:
 	Vec4 e;
 	Vec4 d;
+
+	Ray(Vec4 e, Vec4 d);
 };
 
 #endif

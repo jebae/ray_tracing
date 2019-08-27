@@ -2,13 +2,10 @@
 # define OBJECT_HPP
 
 # include "vec4.hpp"
-
-class Ray;
+# include "ray.hpp"
 
 class Object
 {
-private:
-
 public:
 	int specular_alpha;
 	float reflectivity;
@@ -23,7 +20,9 @@ public:
 		float ior,
 		Vec4 color
 	);
-	virtual bool intersect(Ray *ray) = 0;
+	virtual ~Object() {};
+	virtual bool intersect(Ray &ray, float &t);
+	virtual Vec4 get_normal(Vec4 &point);
 };
 
 #endif
