@@ -20,7 +20,7 @@ float& Vec4::operator [] (int i)
 	return (vec[i]);
 }
 
-bool Vec4::operator == (Vec4 &factor)
+bool Vec4::operator == (Vec4 factor)
 {
 	for (int i=0; i < 4; i++)
 	{
@@ -30,7 +30,7 @@ bool Vec4::operator == (Vec4 &factor)
 	return (true);
 }
 
-Vec4 Vec4::operator + (Vec4 &factor)
+Vec4 Vec4::operator + (Vec4 factor)
 {
 	Vec4 res;
 
@@ -39,14 +39,14 @@ Vec4 Vec4::operator + (Vec4 &factor)
 	return (res);
 }
 
-Vec4& Vec4::operator += (Vec4 &factor)
+Vec4& Vec4::operator += (Vec4 factor)
 {
 	for (int i=0; i < 3; i++)
 		vec[i] += factor[i];
 	return (*this);
 }
 
-Vec4 Vec4::operator - (Vec4 &factor)
+Vec4 Vec4::operator - (Vec4 factor)
 {
 	Vec4 res;
 
@@ -55,14 +55,14 @@ Vec4 Vec4::operator - (Vec4 &factor)
 	return (res);
 }
 
-Vec4& Vec4::operator -= (Vec4 &factor)
+Vec4& Vec4::operator -= (Vec4 factor)
 {
 	for (int i=0; i < 3; i++)
 		vec[i] -= factor[i];
 	return (*this);
 }
 
-float Vec4::dot(Vec4 &factor)
+float Vec4::dot(Vec4 factor)
 {
 	float res;
 
@@ -72,7 +72,7 @@ float Vec4::dot(Vec4 &factor)
 	return (res);
 }
 
-Vec4 Vec4::cross(Vec4 &factor)
+Vec4 Vec4::cross(Vec4 factor)
 {
 	Vec4 res;
 
@@ -96,7 +96,7 @@ void Vec4::normalize(void)
 		vec[i] /= n;
 }
 
-ostream& operator << (ostream &os, Vec4 &vec4)
+ostream& operator << (ostream &os, Vec4 vec4)
 {
 	int i;
 
@@ -108,7 +108,7 @@ ostream& operator << (ostream &os, Vec4 &vec4)
 	return (os);
 }
 
-Vec4 operator * (float scalar, Vec4 &vec)
+Vec4 operator * (float scalar, Vec4 vec)
 {
 	Vec4 res;
 

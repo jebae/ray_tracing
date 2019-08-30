@@ -28,6 +28,12 @@ public:
 	Vec4 d;
 
 	Ray(Vec4 e, Vec4 d);
+	Vec4 get_intersect_point(float t);
+	static Ray get_ray_by_grid_props(
+		RayGridProps &props,
+		int scalar_x,
+		int scalar_y
+	);
 };
 
 #endif

@@ -23,7 +23,7 @@ public:
 		float height,
 		float theta
 	);
-	bool intersect(Ray &ray, float &t);
+	//bool intersect(Ray &ray, float &t);
 };
 
 #endif

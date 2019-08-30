@@ -24,6 +24,6 @@ TraceRecord Tracer::trace(Ray &ray)
 		}
 	}
 	if (t[1] != INFINITY)
-		rec.set_intersect_point(t[1]);
+		rec.point = ray.get_intersect_point(t[1]);
 	return (rec);
 }

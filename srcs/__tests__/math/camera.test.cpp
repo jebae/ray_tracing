@@ -1,5 +1,6 @@
 #include "__test_utils__.hpp"
 #include "camera.hpp"
+#include <cmath>
 
 class TestCamera : public UnitTest
 {

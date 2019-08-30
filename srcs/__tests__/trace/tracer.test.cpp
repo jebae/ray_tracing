@@ -1,5 +1,6 @@
 #include "__test_utils__.hpp"
 #include "tracer.hpp"
+#include "sphere.hpp"
 
 class TestTracer : public UnitTest
 {
@@ -35,7 +36,6 @@ Sphere* TestTracer::create_test_sphere(
 		center
 	));
 }
-
 
 void TestTracer::test_trace_case1(void)
 {

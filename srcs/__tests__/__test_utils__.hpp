@@ -4,11 +4,7 @@
 # include <iostream>
 # include <sstream>
 # include <string>
-
-# define KRED "\x1B[31m"
-# define KGRN "\x1B[32m"
-# define KYEL "\x1B[33m"
-# define KNRM "\x1B[0m"
+# include "macro.hpp"
 
 # define TEST_TRUE 1
 # define TEST_FALSE 0

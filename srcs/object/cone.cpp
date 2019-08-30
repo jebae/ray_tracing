@@ -21,10 +21,15 @@ perp_vec(perp_vec),
 height(height),
 theta(theta)
 {
-	cos_2_theta = powf(cos(theta), 2.0f);
+	cos_2_theta = powf(cosf(theta), 2.0f);
+	this->perp_vec.normalize();
 }
 
+/*
 bool Cone::intersect(Ray &ray, float &t)
 {
-	
+	float a;
+	float b;
+	float c;
 }
+*/
