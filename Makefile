@@ -29,10 +29,10 @@ CFLAGS = -Wall -Wextra -Werror -std=c++11
 
 INCLUDES = -I ./$(INCDIR)
 
-LIBS = -lmlx
+LIBS = -L. -lmlx\
+	 -L. -lrt\
 
-FRAMEWORKS = -F /System/Library/Frameworks\
-	-framework AppKit\
+FRAMEWORKS = -framework AppKit\
 	-framework OpenGL\
 
 # srcs
@@ -56,7 +56,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_RAY:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_TRACE:.cpp=.o))
-#OBJS += $(addprefix $(OBJDIR)/, $(SRC_MLX:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_MLX:.cpp=.o))
 
 # compile objs
 HEADERS = $(INCDIR)/vec4.hpp\
@@ -66,7 +66,7 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/sphere.hpp\
 	$(INCDIR)/trace_record.hpp\
 	$(INCDIR)/tracer.hpp\
-#	$(INCDIR)/mlx_kit.hpp\
+	$(INCDIR)/mlx_kit.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
@@ -80,8 +80,8 @@ $(OBJDIR)/%.o : $(SRCDIR)/object/%.cpp $(HEADERS)
 $(OBJDIR)/%.o : $(SRCDIR)/trace/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
-#$(OBJDIR)/%.o : $(SRCDIR)/mlx/%.cpp $(HEADERS)
-#	@$(call compile_obj,$<,$@)
+$(OBJDIR)/%.o : $(SRCDIR)/mlx/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
 
 # build
 all : $(NAME)
@@ -101,7 +101,7 @@ $(OBJDIR) :
 
 # commands
 build_test : all
-	$(CC) $(CFLAGS) $(INCLUDES) -I ./srcs/__tests__ -L. -lrt -lmlx $(FRAMEWORKS) ./srcs/__tests__/*.cpp ./srcs/__tests__/*/*.cpp ./srcs/mlx/mlx_kit.cpp -o test
+	@$(CC) $(CFLAGS) $(INCLUDES) -I ./srcs/__tests__ $(LIBS) $(FRAMEWORKS) ./srcs/__tests__/*.cpp -o test
 
 clean :
 	@rm -rf $(OBJS)

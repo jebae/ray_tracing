@@ -7,20 +7,20 @@ using namespace std;
 MLXKit::MLXKit(int width, int height)
 : width(width), height(height)
 {
-	cout << "MLX kit is initializing";
+	cout << "mlx kit is initializing";
 	p_mlx = mlx_init();
 	p_win = mlx_new_window(
 		p_mlx, width, height,
 		(char *)"window"
 	);
 	p_img = mlx_new_image(p_mlx, width, height);
-	mlx_key_hook(p_win, &key_press, nullptr);
+	mlx_key_hook(p_win, &key_press, static_cast<void *>(this));
 	cout << KGRN << " ... DONE" << KNRM << endl;
 }
 
 MLXKit::~MLXKit(void)
 {
-	cout << "MLX kit is destructing";
+	cout << "mlx kit is destructing";
 	mlx_destroy_image(p_mlx, p_img);
 	mlx_destroy_window(p_mlx, p_win);
 	cout << KGRN << " ... DONE" << KNRM << endl;
@@ -44,7 +44,14 @@ void MLXKit::loop(void)
 	mlx_loop(p_mlx);
 }
 
-int key_press(void)
+int key_press(int keycode, void *param)
 {
-	exit(0);
+	MLXKit *mlx = static_cast<MLXKit *>(param);
+
+	if (keycode == KEY_ESC)
+	{
+		mlx->~MLXKit();
+		exit(0);
+	}
+	return (0);
 }

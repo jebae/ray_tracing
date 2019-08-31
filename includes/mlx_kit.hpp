@@ -1,4 +1,7 @@
-#include <mlx.h>
+extern "C"
+{
+	#include "mlx.h"
+}
 
 class MLXKit
 {
@@ -16,4 +19,4 @@ public:
 	void put_img_to_window(void);
 };
 
-int key_press(void);
+int key_press(int keycode, void *param);
