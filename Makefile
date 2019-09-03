@@ -29,7 +29,7 @@ CFLAGS = -Wall -Wextra -Werror -std=c++11
 
 INCLUDES = -I ./$(INCDIR)
 
-LIBS = -L. -lmlx\
+LIBS = -lmlx\
 	 -L. -lrt\
 
 FRAMEWORKS = -framework AppKit\
