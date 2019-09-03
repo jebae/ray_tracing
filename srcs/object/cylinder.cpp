@@ -1,43 +1,42 @@
-#include "cone.hpp"
+#include "cylinder.hpp"
 
-Cone::Cone(
+Cylinder::Cylinder(
 	int specular_alpha,
 	float reflectivity,
 	float transparency,
 	float ior,
 	Vec4 color,
-	Vec4 vertex,
-	Vec4 perp_vec,
+	float radius,
 	float height,
-	float theta
+	Vec4 center,
+	Vec4 perp_vec
 ): Object(
 	specular_alpha,
 	reflectivity,
 	transparency,
 	ior,
 	color
-), vertex(vertex),
-perp_vec(perp_vec),
+), radius(radius),
 height(height),
-theta(theta)
+center(center),
+perp_vec(perp_vec)
 {
-	cos_2_theta = powf(cosf(theta), 2.0f);
 	this->perp_vec.normalize();
 }
 
-bool Cone::intersect(Ray &ray, float &t)
+bool Cylinder::intersect(Ray &ray, float &t)
 {
-	Vec4 ve = ray.e - vertex;
+	Vec4 ce = ray.e - center;
 	float a;
 	float b;
 	float c;
 	float det;
 	float d_dot_perp = ray.d.dot(perp_vec);
-	float ve_dot_perp = ve.dot(perp_vec);
+	float ce_dot_perp = ce.dot(perp_vec);
 
-	a = d_dot_perp * d_dot_perp - cos_2_theta;
-	b = d_dot_perp * ve_dot_perp - ray.d.dot(ve) * cos_2_theta;
-	c = ve_dot_perp * ve_dot_perp - ve.dot(ve) * cos_2_theta;
+	a = d_dot_perp * d_dot_perp - 1.0f;
+	b = d_dot_perp * ce_dot_perp - ce.dot(ray.d);
+	c = radius * radius + ce_dot_perp * ce_dot_perp - ce.dot(ce);
 	det = b * b - a * c;
 	if (det < 0.0f)
 		return (false);
@@ -47,7 +46,7 @@ bool Cone::intersect(Ray &ray, float &t)
 	return (true);
 }
 
-float Cone::get_t(
+float Cylinder::get_t(
 	Ray &ray,
 	float a,
 	float b,
@@ -57,7 +56,7 @@ float Cone::get_t(
 	float t[2];
 	float det;
 	float temp;
-	Vec4 vp;
+	Vec4 cp;
 
 	t[0] = (-1.0f * b + root_det) / a;
 	t[1] = (-1.0f * b - root_det) / a;
@@ -71,8 +70,8 @@ float Cone::get_t(
 	{
 		if (t[i] < 0.0f)
 			continue ;
-		vp = ray.get_intersect_point(t[i]) - vertex;
-		det = vp.dot(perp_vec);
+		cp = ray.get_intersect_point(t[i]) - center;
+		det = cp.dot(perp_vec);
 		if (det >= 0.0f && det <= height)
 			return (t[i]);
 	}

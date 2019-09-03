@@ -1,9 +1,9 @@
-#ifndef CONE_HPP
-# define CONE_HPP
+#ifndef CYLINDER_HPP
+# define CYLINDER_HPP
 
-# include "object.hpp"
+#include "object.hpp"
 
-class Cone : public Object
+class Cylinder : public Object
 {
 private:
 	float get_t(
@@ -12,24 +12,22 @@ private:
 		float b,
 		float root_det
 	);
-
 public:
-	Vec4 vertex;
-	Vec4 perp_vec;
+	float radius;
 	float height;
-	float theta;
-	float cos_2_theta;
+	Vec4 center;
+	Vec4 perp_vec;
 
-	Cone(
+	Cylinder(
 		int specular_alpha,
 		float reflectivity,
 		float transparency,
 		float ior,
 		Vec4 color,
-		Vec4 vertex,
-		Vec4 perp_vec,
+		float radius,
 		float height,
-		float theta
+		Vec4 center,
+		Vec4 perp_vec
 	);
 	bool intersect(Ray &ray, float &t);
 };

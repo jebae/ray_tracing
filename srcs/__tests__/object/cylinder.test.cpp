@@ -1,61 +1,60 @@
 #include "__test_utils__.hpp"
-#include "cone.hpp"
+#include "cylinder.hpp"
 #include "ray.hpp"
 
-class TestCone : public UnitTest
+class TestCylinder : public UnitTest
 {
 public:
-	TestCone(bool print_success=false);
-	Cone create_test_cone(void);
+	TestCylinder(bool print_success=false);
+	Cylinder create_test_cylinder(void);
 	void test_construct_case1(void);
 	void test_intersect_case1(void);
 	void all(void);
 };
 
-TestCone::TestCone(bool print_success)
-: UnitTest("Cone", print_success)
+TestCylinder::TestCylinder(bool print_success)
+: UnitTest("Cylinder", print_success)
 {}
 
-Cone TestCone::create_test_cone(void)
+Cylinder TestCylinder::create_test_cylinder(void)
 {
 	int specular_alpha = 50;
 	float reflectivity = 0.3f;
 	float transparency = 0.2f;
 	float ior = 1.5f;
 	Vec4 color(vector<float>{0.4f, 0.4f, 0.4f});
-	Vec4 vertex(vector<float>{-1.0f, 10.0f, 1.5f});
-	Vec4 perp_vec(vector<float>{0.5f, -2.0f, -3.0f});
-	float height = 4.0f;
-	float theta = M_PI / 6.0f;
+	float radius = 1.0f;
+	float height = 2.0f;
+	Vec4 center(vector<float>{0.0f, 5.0f, 2.0f});
+	Vec4 perp_vec(vector<float>{1.0f, 1.0f, -2.0f});
 
-	return (Cone(
+	return (Cylinder(
 		specular_alpha,
 		reflectivity,
 		transparency,
 		ior,
 		color,
-		vertex,
-		perp_vec,
+		radius,
 		height,
-		theta
+		center,
+		perp_vec
 	));
 }
 
-void TestCone::test_construct_case1(void)
+void TestCylinder::test_construct_case1(void)
 {
-	set_subject("Cone has to have cos_2_theta, and normalized perp_vec");
-	Cone cone = create_test_cone();
+	set_subject("Cylinder perpe vector has to be normalized");
+	Cylinder cylinder = create_test_cylinder();
 	float precision = 1000000;
 	float norm;
 
-	eq(cone.cos_2_theta, powf(cosf(cone.theta), 2.0f));
-	norm = round(cone.perp_vec.norm() * precision) / precision;
+	norm = round(cylinder.perp_vec.norm() * precision) / precision;
 	eq(norm, 1.0f);
 }
 
-void TestCone::test_intersect_case1(void)
+void TestCylinder::test_intersect_case1(void)
 {
-	set_subject("cone intersect has to be shown");
+	set_subject("cylinder intersect has to be shown");
 	float width = 1000;
 	float height = 800;
 	Camera cam(
@@ -63,7 +62,7 @@ void TestCone::test_intersect_case1(void)
 		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
 	);
 	RayGridProps props(cam, width, height);
-	Cone cone = create_test_cone();
+	Cylinder cylinder = create_test_cylinder();
 	MLXKit mlx((int)width, (int)height);
 	int *img_buf = mlx.get_img_buffer();
 	float t;
@@ -74,7 +73,7 @@ void TestCone::test_intersect_case1(void)
 		{
 			Ray ray = Ray::get_ray_by_grid_props(props, j, i);
 
-			if (cone.intersect(ray, t))
+			if (cylinder.intersect(ray, t))
 				img_buf[j + (int)width * i] = 0xFFFFFF;
 		}
 	}
@@ -82,7 +81,7 @@ void TestCone::test_intersect_case1(void)
 	mlx.loop();
 }
 
-void TestCone::all(void)
+void TestCylinder::all(void)
 {
 	test_construct_case1();
 	test_intersect_case1();

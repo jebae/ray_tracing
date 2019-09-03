@@ -45,6 +45,7 @@ SRC_RAY = ray_grid_props.cpp\
 SRC_OBJECT = object.cpp\
 	sphere.cpp\
 	cone.cpp\
+	cylinder.cpp\
 
 SRC_TRACE = trace_record.cpp\
 	tracer.cpp\
@@ -64,6 +65,8 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/ray.hpp\
 	$(INCDIR)/object.hpp\
 	$(INCDIR)/sphere.hpp\
+	$(INCDIR)/cone.hpp\
+	$(INCDIR)/cylinder.hpp\
 	$(INCDIR)/trace_record.hpp\
 	$(INCDIR)/tracer.hpp\
 	$(INCDIR)/mlx_kit.hpp\
