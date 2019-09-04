@@ -7,8 +7,6 @@
 
 class Vec4
 {
-friend class Camera;
-
 private:
 	std::vector<float> vec;
 

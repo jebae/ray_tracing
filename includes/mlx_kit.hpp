@@ -1,3 +1,6 @@
+#ifndef MLX_KIT_HPP
+# define MLX_KIT_HPP
+
 extern "C"
 {
 	#include "mlx.h"
@@ -20,3 +23,5 @@ public:
 };
 
 int key_press(int keycode, void *param);
+
+#endif

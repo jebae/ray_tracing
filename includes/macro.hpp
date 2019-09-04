@@ -6,3 +6,6 @@
 # define KEY_ESC		53
 # define MLX_BPP		32
 # define MLX_ENDIAN		0
+# define FLOAT_APPROX_0	1e-6f
+
+# define ABS(X) ((X < 0) ? -(X) : (X))

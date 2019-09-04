@@ -46,9 +46,13 @@ SRC_OBJECT = object.cpp\
 	sphere.cpp\
 	cone.cpp\
 	cylinder.cpp\
+	plane.cpp\
 
 SRC_TRACE = trace_record.cpp\
 	tracer.cpp\
+
+SRC_SHADE = shade.cpp\
+	ambient.cpp\
 
 SRC_MLX = mlx_kit.cpp\
 
@@ -57,6 +61,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(SRC_MATH:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_RAY:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_TRACE:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_SHADE:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_MLX:.cpp=.o))
 
 # compile objs
@@ -67,8 +72,10 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/sphere.hpp\
 	$(INCDIR)/cone.hpp\
 	$(INCDIR)/cylinder.hpp\
+	$(INCDIR)/plane.hpp\
 	$(INCDIR)/trace_record.hpp\
 	$(INCDIR)/tracer.hpp\
+	$(INCDIR)/shade.hpp\
 	$(INCDIR)/mlx_kit.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
@@ -81,6 +88,9 @@ $(OBJDIR)/%.o : $(SRCDIR)/object/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/trace/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/shade/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/mlx/%.cpp $(HEADERS)
