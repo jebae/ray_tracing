@@ -10,6 +10,8 @@
 #include "trace/trace_record.test.cpp"
 #include "trace/tracer.test.cpp"
 #include "shade/shade.test.cpp"
+#include "light/distant_light.test.cpp"
+#include "light/spherical_light.test.cpp"
 
 int main(void)
 {
@@ -19,7 +21,9 @@ int main(void)
 	TestObject test_object;
 	TestTracer test_tracer;
 	TestRay test_ray;
-	TestShade test_shade(true);
+	TestShade test_shade;
+	TestDistantLight test_distant_light;
+	TestSphericalLight test_spherical_light(true);
 
 	TestSphere test_sphere;
 	TestCone test_cone;
@@ -33,6 +37,8 @@ int main(void)
 	test_tracer.all();
 	test_ray.all();
 	test_shade.all();
+	test_distant_light.all();
+	test_spherical_light.all();
 
 	//test_sphere.all();
 	//test_cone.all();

@@ -54,6 +54,10 @@ SRC_TRACE = trace_record.cpp\
 SRC_SHADE = shade.cpp\
 	ambient.cpp\
 
+SRC_LIGHT = light.cpp\
+	distant_light.cpp\
+	spherical_light.cpp\
+
 SRC_MLX = mlx_kit.cpp\
 
 # objs
@@ -62,6 +66,7 @@ OBJS += $(addprefix $(OBJDIR)/, $(SRC_RAY:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_TRACE:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_SHADE:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_LIGHT:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_MLX:.cpp=.o))
 
 # compile objs
@@ -76,6 +81,9 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/trace_record.hpp\
 	$(INCDIR)/tracer.hpp\
 	$(INCDIR)/shade.hpp\
+	$(INCDIR)/light.hpp\
+	$(INCDIR)/distant_light.hpp\
+	$(INCDIR)/spherical_light.hpp\
 	$(INCDIR)/mlx_kit.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
@@ -91,6 +99,9 @@ $(OBJDIR)/%.o : $(SRCDIR)/trace/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/shade/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/light/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/mlx/%.cpp $(HEADERS)
