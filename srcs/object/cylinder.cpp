@@ -77,3 +77,13 @@ float Cylinder::get_t(
 	}
 	return (-1.0f);
 }
+
+Vec4 Cylinder::get_normal(Vec4 &point)
+{
+	Vec4 cp = point - center;
+	Vec4 ca = perp_vec * (cp.dot(perp_vec));
+	Vec4 n = cp - ca;
+
+	n.normalize();
+	return (n);
+}

@@ -30,6 +30,7 @@ public:
 		Vec4 perp_vec
 	);
 	bool intersect(Ray &ray, float &t);
+	Vec4 get_normal(Vec4 &point);
 };
 
 #endif

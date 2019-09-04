@@ -33,3 +33,9 @@ bool Plane::intersect(Ray &ray, float &t)
 		return (false);
 	return (true);
 }
+
+Vec4 Plane::get_normal(Vec4 &point)
+{
+	(void)(point);
+	return (n);
+}

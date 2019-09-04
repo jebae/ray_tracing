@@ -9,6 +9,7 @@ public:
 	Cylinder create_test_cylinder(void);
 	void test_construct_case1(void);
 	void test_intersect_case1(void);
+	void test_get_normal_case1(void);
 	void all(void);
 };
 
@@ -81,8 +82,44 @@ void TestCylinder::test_intersect_case1(void)
 	mlx.loop();
 }
 
+void TestCylinder::test_get_normal_case1(void)
+{
+	set_subject("cylinder get_normal has to return normal vector");
+	float width = 1000;
+	float height = 800;
+	Camera cam(
+		Vec4(vector<float>{0.0f, 0.0f, 0.0f}),
+		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
+	);
+	RayGridProps props(cam, width, height);
+	Cylinder cylinder = create_test_cylinder();
+	Vec4 light_direction(vector<float>{1.0f, 2.0f, -1.5f});
+	light_direction.normalize();
+	light_direction *= -1.0f;
+
+	MLXKit mlx((int)width, (int)height);
+	int *img_buf = mlx.get_img_buffer();
+	float t;
+
+	for (int i=0; i < height; i++)
+	{
+		for (int j=0; j < width; j++)
+		{
+			Ray ray = Ray::get_ray_by_grid_props(props, j, i);
+
+			if (!cylinder.intersect(ray, t))
+				continue ;
+			Vec4 point = ray.get_intersect_point(t);
+			Vec4 n = cylinder.get_normal(point);
+			float n_dot_l = MAX(0.0f, n.dot(light_direction));
+			img_buf[j + (int)width * i] = 0x0000FF * n_dot_l;
+		}
+	}
+	mlx.put_img_to_window();
+	mlx.loop();
+}
+
 void TestCylinder::all(void)
 {
 	test_construct_case1();
-	test_intersect_case1();
 }

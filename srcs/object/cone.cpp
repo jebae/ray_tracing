@@ -78,3 +78,13 @@ float Cone::get_t(
 	}
 	return (-1.0f);
 }
+
+Vec4 Cone::get_normal(Vec4 &point)
+{
+	Vec4 vp = point - vertex;
+	Vec4 va = perp_vec * (vp.norm() / cosf(theta));
+	Vec4 n = vp - va;
+
+	n.normalize();
+	return (n);
+}

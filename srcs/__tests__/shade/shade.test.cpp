@@ -23,12 +23,14 @@ void TestShade::test_ambient_case1(void)
 	float transparency = 0.2f;
 	float ior = 1.5f;
 	Vec4 color(vector<float>{0.4f, 0.4f, 0.4f});
-	Object obj(
+	Sphere obj(
 		specular_alpha,
 		reflectivity,
 		transparency,
 		ior,
-		color
+		color,
+		1.0f,
+		Vec4(vector<float>(3, 0.0f))
 	);
 
 	// create record (value below is dummy)

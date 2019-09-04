@@ -50,3 +50,15 @@ float Sphere::get_t(float d_dot_ce, float root_det)
 	else
 		return (t2);
 }
+
+Vec4 Sphere::get_normal(Vec4 &point)
+{
+	Vec4 cp = point - center;
+
+	cp.normalize();
+	return (cp);
+	/*
+	* normal from inside surface of shape
+	* would be handled in tracer.trace
+	*/
+}

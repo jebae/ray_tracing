@@ -21,8 +21,10 @@ public:
 		Vec4 color
 	);
 	virtual ~Object() {};
-	virtual bool intersect(Ray &ray, float &t);
-	virtual Vec4 get_normal(Vec4 &point);
+	virtual bool intersect(Ray &ray, float &t) = 0;
+	virtual Vec4 get_normal(Vec4 &point) {
+		return (point);
+	};
 };
 
 #endif

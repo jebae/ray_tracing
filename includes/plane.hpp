@@ -19,6 +19,7 @@ public:
 		Vec4 n
 	);
 	bool intersect(Ray &ray, float &t);
+	Vec4 get_normal(Vec4 &point);
 };
 
 #endif
