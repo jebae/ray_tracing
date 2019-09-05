@@ -53,6 +53,7 @@ SRC_TRACE = trace_record.cpp\
 
 SRC_SHADE = shade.cpp\
 	ambient.cpp\
+	diffuse.cpp\
 
 SRC_LIGHT = light.cpp\
 	distant_light.cpp\
@@ -85,6 +86,7 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/distant_light.hpp\
 	$(INCDIR)/spherical_light.hpp\
 	$(INCDIR)/mlx_kit.hpp\
+	$(INCDIR)/global.hpp\
 
 $(OBJDIR)/%.o : $(SRCDIR)/math/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)

@@ -63,8 +63,7 @@ void TestTracer::test_trace_case1(void)
 	TraceRecord rec = tracer.trace(ray);
 
 	eq(rec.obj, objs[1]);
-	eq(rec.ray.d, ray.d);
-	eq(rec.ray.e, ray.e);
+	eq(rec.normal, objs[1]->get_normal(rec.point));
 
 	float precision = 1000000;
 	rec.point.for_each(

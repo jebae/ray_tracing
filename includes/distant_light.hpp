@@ -12,6 +12,7 @@ public:
 	DistantLight(Vec4 intensity, Vec4 direction);
 	float get_distance(Vec4 &point);
 	Vec4 get_direction(Vec4 &point);
+	Vec4 get_intensity(float distance);
 };
 
 #endif

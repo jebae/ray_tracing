@@ -1,4 +1,5 @@
 #include "spherical_light.hpp"
+#include <cmath>
 
 SphericalLight::SphericalLight(Vec4 intensity, Vec4 origin)
 : Light(intensity), origin(origin)
@@ -18,4 +19,9 @@ Vec4 SphericalLight::get_direction(Vec4 &point)
 
 	direction.normalize();
 	return (direction);
+}
+
+Vec4 SphericalLight::get_intensity(float distance)
+{
+	return (1.0f / (4 * M_PI * distance * distance) * intensity);
 }

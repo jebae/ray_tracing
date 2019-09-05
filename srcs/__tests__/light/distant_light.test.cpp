@@ -7,6 +7,7 @@ public:
 	TestDistantLight(bool print_success=false);
 	void test_get_distance_case1(void);
 	void test_get_direction_case1(void);
+	void test_get_intensity_case1(void);
 	void all(void);
 };
 
@@ -44,8 +45,23 @@ void TestDistantLight::test_get_direction_case1(void)
 	eq(res, direction);
 }
 
+void TestDistantLight::test_get_intensity_case1(void)
+{
+	set_subject("Distant light intensity has to be same for all point");
+	Vec4 intensity(vector<float>(3, 0.9f));
+	DistantLight light(
+		intensity,
+		Vec4(vector<float>{0.1f, 0.2f, 0.3f})
+	);
+	Vec4 point;
+	Vec4 res = light.get_intensity(INFINITY);
+
+	eq(res, intensity);
+}
+
 void TestDistantLight::all(void)
 {
 	test_get_distance_case1();
 	test_get_direction_case1();
+	test_get_intensity_case1();
 }

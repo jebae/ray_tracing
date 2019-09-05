@@ -18,3 +18,9 @@ Vec4 DistantLight::get_direction(Vec4 &point)
 	(void)(point);
 	return (direction);
 }
+
+Vec4 DistantLight::get_intensity(float distance)
+{
+	(void)(distance);
+	return (intensity);
+}

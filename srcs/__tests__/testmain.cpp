@@ -30,11 +30,13 @@ int main(void)
 
 	// trace
 	TestTracer test_tracer;
+	TestTraceRecord test_trace_record;
 
 	test_tracer.all();
+	test_trace_record.all();
 
 	// shade
-	TestShade test_shade;
+	TestShade test_shade(true);
 
 	test_shade.all();
 
@@ -63,5 +65,5 @@ int main(void)
 	//test_sphere.test_get_normal_case1();
 	//test_cone.test_get_normal_case1();
 	//test_cylinder.test_get_normal_case1();
-	test_plane.test_get_normal_case1();
+	//test_plane.test_get_normal_case1();
 }

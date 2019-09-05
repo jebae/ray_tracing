@@ -7,6 +7,7 @@ public:
 	TestSphericalLight(bool print_success=false);
 	void test_get_distance_case1(void);
 	void test_get_direction_case1(void);
+	void test_get_intensity_case1(void);
 	void all(void);
 };
 
@@ -49,8 +50,23 @@ void TestSphericalLight::test_get_direction_case1(void)
 	eq(res, expected);
 }
 
+void TestSphericalLight::test_get_intensity_case1(void)
+{
+	set_subject("Spherical light has to return proper intensity");
+	SphericalLight light(
+		Vec4(vector<float>(3, 0.9f)),
+		Vec4(vector<float>{0.1f, 0.2f, 0.3f})
+	);
+	float distance = 3.14f;
+
+	Vec4 res = light.get_intensity(distance);
+	Vec4 expected = 1.0f / (4 * M_PI * distance * distance) * light.intensity;
+	eq(res, expected);
+}
+
 void TestSphericalLight::all(void)
 {
 	test_get_distance_case1();
 	test_get_direction_case1();
+	test_get_intensity_case1();
 }
