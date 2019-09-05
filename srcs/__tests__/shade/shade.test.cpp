@@ -11,6 +11,7 @@ public:
 	Sphere create_test_object(void);
 	void test_ambient_case1(void);
 	void test_diffuse_case1(void);
+	void test_specular_case1(void);
 	void all(void);
 };
 
@@ -87,16 +88,63 @@ void TestShade::test_diffuse_case1(void)
 	float n_dot_l = rec.normal.dot(
 		-1.0f * light.get_direction(rec.point)
 	);
+	n_dot_l = MAX(n_dot_l, 0.0f);
 	Vec4 expected(vector<float>{
-		MAX(n_dot_l, 0.0f) * obj.color[0] * light.intensity[0],
-		MAX(n_dot_l, 0.0f) * obj.color[1] * light.intensity[1],
-		MAX(n_dot_l, 0.0f) * obj.color[2] * light.intensity[2]
+		n_dot_l * obj.color[0] * light.intensity[0],
+		n_dot_l * obj.color[1] * light.intensity[1],
+		n_dot_l * obj.color[2] * light.intensity[2]
 	});
 	eq(expected, shade.diffuse());
+}
+
+void TestShade::test_specular_case1(void)
+{
+	set_subject("Shade specular has to be returned");
+	// create test object and light
+	Sphere obj = create_test_object();
+	DistantLight light(
+		Vec4(vector<float>{0.8f, 0.8f, 0.8f}),
+		Vec4(vector<float>{0.5f, 0.8f, -0.8f})
+	);
+
+	// set ray
+	Ray ray(
+		Vec4(vector<float>{0.0f, 0.0f, 0.0f}),
+		Vec4(vector<float>{0.1f, 0.9f, 0.1f})
+	);
+
+	TraceRecord rec(&obj, ray);
+	float t;
+
+	// test if intersect exist
+	bool intersect = obj.intersect(ray, t);
+	if (eq(intersect, true) == TEST_FAIL)
+		return ;
+	rec.update_intersect_info(t);
+
+	Shade shade(&rec, light);
+
+	// calculate expected value
+	Vec4 l = light.get_direction(rec.point);
+	float n_dot_l = rec.normal.dot(-1.0f * l);
+	n_dot_l = MAX(n_dot_l, 0.0f);
+	Vec4 r = l + 2 * n_dot_l * rec.normal;
+	float r_dot_d = -1.0f * r.dot(ray.d);
+
+	r_dot_d = MAX(r_dot_d, 0.0f);
+	r_dot_d = powf(r_dot_d, obj.specular_alpha);
+
+	Vec4 expected(vector<float>{
+		light.intensity[0] * obj.color[0] * r_dot_d,
+		light.intensity[1] * obj.color[1] * r_dot_d,
+		light.intensity[2] * obj.color[2] * r_dot_d
+	});
+	eq(expected, shade.specular());
 }
 
 void TestShade::all(void)
 {
 	test_ambient_case1();
 	test_diffuse_case1();
+	test_specular_case1();
 }

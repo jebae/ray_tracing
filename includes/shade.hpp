@@ -10,6 +10,7 @@ class Shade
 {
 private:
 	TraceRecord *rec;
+	float n_dot_l;
 	float light_distance;
 	Vec4 light_direction;
 	Vec4 light_intensity;
@@ -21,6 +22,7 @@ public:
 		Vec4 &ambient_intensity
 	);
 	Vec4 diffuse(void);
+	Vec4 specular(void);
 };
 
 #endif

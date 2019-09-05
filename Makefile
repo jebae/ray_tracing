@@ -52,8 +52,6 @@ SRC_TRACE = trace_record.cpp\
 	tracer.cpp\
 
 SRC_SHADE = shade.cpp\
-	ambient.cpp\
-	diffuse.cpp\
 
 SRC_LIGHT = light.cpp\
 	distant_light.cpp\
