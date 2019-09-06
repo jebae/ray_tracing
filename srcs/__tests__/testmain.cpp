@@ -34,11 +34,11 @@ int main(void)
 	TestTraceRecord test_trace_record;
 
 	test_tracer.all();
-	//test_tracer.test_trace_case1();
+	test_tracer.test_trace_case1();
 	test_trace_record.all();
 
 	// shade
-	TestShade test_shade(true);
+	TestShade test_shade;
 
 	test_shade.all();
 

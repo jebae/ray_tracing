@@ -2,9 +2,12 @@
 #include "object.hpp"
 #include "shade.hpp"
 #include "trace_record.hpp"
+#include "macro.hpp"
 #include <cmath>
 
 extern Vec4 AMBIENT_INTENSITY;
+
+using namespace std;
 
 Tracer::Tracer(
 	Object **objs,
@@ -58,12 +61,30 @@ Vec4 Tracer::shade(TraceRecord &rec)
 	return (res);
 }
 
-Vec4 Tracer::trace(Ray &ray)
+Vec4 Tracer::trace(Ray &ray, float coeff, int depth)
 {
 	TraceRecord rec(ray);
 	Vec4 rgb;
 
-	if (check_intersect(rec))
-		rgb = shade(rec);
-	return (rgb);
+	if (!check_intersect(rec))
+		return (rgb);
+	rgb = shade(rec);
+	if (depth > MAX_TRACE_DEPTH)
+		return (coeff * rgb);
+	Ray reflection_ray = get_reflection_ray(rec);
+	rgb += trace(reflection_ray, coeff * rec.obj->reflectivity, depth + 1);
+	// get refraction ray
+	// recursion -> trace(refraction_ray, coeff * (1 - rec.obj->reflectivity) * transparency);
+	// sum shade + reflect + refract
+	return (coeff * rgb);
+}
+
+Ray Tracer::get_reflection_ray(TraceRecord &rec)
+{
+	float d_dot_n = -1.0f * rec.ray.d.dot(rec.normal);
+
+	return Ray(
+		rec.point + BIAS * rec.normal,
+		rec.ray.d + 2.0f * d_dot_n * rec.normal
+	);
 }

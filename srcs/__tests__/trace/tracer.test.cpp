@@ -16,6 +16,7 @@ public:
 	void test_check_intersect_case1(void);
 	void test_shade_case1(void);
 	void test_trace_case1(void); // using mlx
+	void test_get_reflection_ray_case1(void);
 	void all(void);
 };
 
@@ -141,8 +142,8 @@ void TestTracer::test_trace_case1(void)
 {
 	set_subject("tracer.trace has to show shaded image");
 	// set ray grid
-	float width = 1000;
-	float height = 800;
+	float width = 600;
+	float height = 400;
 	Camera cam(
 		Vec4(vector<float>{0.0f, -4.0f, 0.0f}),
 		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
@@ -222,7 +223,7 @@ void TestTracer::test_trace_case1(void)
 			Ray ray = Ray::get_ray_by_grid_props(props, j, i);
 			Tracer tracer(objs, 4, lights, num_lights);
 
-			Vec4 rgb = tracer.trace(ray);
+			Vec4 rgb = tracer.trace(ray, 1.0f, 0);
 			color = 0;
 			color += (rgb[0] >= 1.0f) ? 0xFF : 0xFF * rgb[0];
 			color <<= 8;
@@ -236,8 +237,50 @@ void TestTracer::test_trace_case1(void)
 	mlx.loop();
 }
 
+void TestTracer::test_get_reflection_ray_case1(void)
+{
+	set_subject("tracer.get_reflection_ray should return correct reflection ray");
+
+	// set object
+	Sphere *sphere = create_test_sphere(
+		0.5f, Vec4(vector<float>{0.0f, 0.0f, 0.0f})
+	);
+
+	// set ray
+	Ray ray(
+		Vec4(vector<float>{-0.9f, 1.0f, -2.1f}),
+		Vec4(vector<float>{0.8f, -0.9f, 2.0f})
+	);
+
+	// set record
+	TraceRecord rec(ray, sphere);
+	float t;
+	bool intersect = sphere->intersect(ray, t);
+	if (eq(intersect, true) == TEST_FAIL)
+		return ;
+	rec.update_intersect_info(t);
+
+	// set tracer
+	Object *sphere_ptr = static_cast<Object *>(sphere);
+	Tracer tracer(&sphere_ptr, 1, nullptr, 0);
+
+	Ray res = tracer.get_reflection_ray(rec);
+
+	// get expected reflection ray
+	float d_dot_n = -1.0f * ray.d.dot(rec.normal);
+	Ray expected(
+		rec.point + BIAS * rec.normal,
+		ray.d + 2.0f * d_dot_n * rec.normal
+	);
+
+	eq(res.d, expected.d);
+	eq(res.e, expected.e);
+	delete sphere;
+}
+
 void TestTracer::all(void)
 {
 	test_check_intersect_case1();
 	test_shade_case1();
+	test_get_reflection_ray_case1();
 }

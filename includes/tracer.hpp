@@ -25,7 +25,8 @@ public:
 	);
 	bool check_intersect(TraceRecord &rec);
 	Vec4 shade(TraceRecord &rec);
-	Vec4 trace(Ray &ray);
+	Vec4 trace(Ray &ray, float coeff, int depth);
+	Ray get_reflection_ray(TraceRecord &rec);
 };
 
 #endif
