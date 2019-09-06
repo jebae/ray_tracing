@@ -1,3 +1,4 @@
+#include "global.hpp"
 #include "math/vec4.test.cpp"
 #include "math/camera.test.cpp"
 #include "ray/ray_grid_props.test.cpp"
@@ -29,14 +30,14 @@ int main(void)
 	test_ray.all();
 
 	// trace
-	TestTracer test_tracer;
+	TestTracer test_tracer(true);
 	TestTraceRecord test_trace_record;
 
 	test_tracer.all();
 	test_trace_record.all();
 
 	// shade
-	TestShade test_shade(true);
+	TestShade test_shade;
 
 	test_shade.all();
 

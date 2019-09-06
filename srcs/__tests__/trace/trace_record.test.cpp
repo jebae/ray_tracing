@@ -40,7 +40,7 @@ void TestTraceRecord::test_update_intersect_info_case1(void)
 	);
 
 	// set record
-	TraceRecord rec(&obj, ray);
+	TraceRecord rec(ray, &obj);
 
 	// test if ray intersect obj
 	float t;

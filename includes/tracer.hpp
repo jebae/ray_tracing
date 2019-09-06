@@ -1,20 +1,29 @@
 #ifndef TRACER_HPP
 # define TRACER_HPP
 
-# include "ray.hpp"
-# include "trace_record.hpp"
+# include "vec4.hpp"
 
 class Object;
+class Light;
+class TraceRecord;
 
 class Tracer
 {
 private:
-	Object **objs;
 	int num_objs;
+	int num_lights;
+	Object **objs;
+	Light **lights;
 
 public:
-	Tracer(Object **objs, int num_objs);
-	TraceRecord trace(Ray &ray);
+	Tracer(
+		Object **objs,
+		int num_objs,
+		Light **lights,
+		int num_lights
+	);
+	bool check_intersect(TraceRecord &rec);
+	Vec4 shade(TraceRecord &rec);
 };
 
 #endif

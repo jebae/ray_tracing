@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TraceRecord::TraceRecord(Object *obj, Ray &ray)
+TraceRecord::TraceRecord(Ray &ray, Object *obj)
 : obj(obj), ray(ray)
 {}
 

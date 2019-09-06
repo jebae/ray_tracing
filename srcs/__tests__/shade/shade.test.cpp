@@ -2,7 +2,8 @@
 #include "shade.hpp"
 #include "trace_record.hpp"
 #include "distant_light.hpp"
-#include "global.hpp"
+
+extern Vec4 AMBIENT_INTENSITY;
 
 class TestShade : public UnitTest
 {
@@ -48,7 +49,6 @@ void TestShade::test_ambient_case1(void)
 		Vec4(vector<float>{0.0f, 0.0f, 0.0f}),
 		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
 	);
-	TraceRecord rec(&obj, ray);
 
 	Vec4 res = Shade::ambient(obj.color, AMBIENT_INTENSITY);
 	Vec4 expected(vector<float>{
@@ -75,7 +75,7 @@ void TestShade::test_diffuse_case1(void)
 		Vec4(vector<float>{0.1f, 0.9f, 0.1f})
 	);
 
-	TraceRecord rec(&obj, ray);
+	TraceRecord rec(ray, &obj);
 	float t;
 
 	// test if intersect exist
@@ -84,7 +84,7 @@ void TestShade::test_diffuse_case1(void)
 		return ;
 	rec.update_intersect_info(t);
 
-	Shade shade(&rec, light);
+	Shade shade(rec, &light);
 	float n_dot_l = rec.normal.dot(
 		-1.0f * light.get_direction(rec.point)
 	);
@@ -113,7 +113,7 @@ void TestShade::test_specular_case1(void)
 		Vec4(vector<float>{0.1f, 0.9f, 0.1f})
 	);
 
-	TraceRecord rec(&obj, ray);
+	TraceRecord rec(ray, &obj);
 	float t;
 
 	// test if intersect exist
@@ -122,7 +122,7 @@ void TestShade::test_specular_case1(void)
 		return ;
 	rec.update_intersect_info(t);
 
-	Shade shade(&rec, light);
+	Shade shade(rec, &light);
 
 	// calculate expected value
 	Vec4 l = light.get_direction(rec.point);
