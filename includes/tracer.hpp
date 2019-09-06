@@ -6,6 +6,7 @@
 class Object;
 class Light;
 class TraceRecord;
+class Ray;
 
 class Tracer
 {
@@ -24,6 +25,7 @@ public:
 	);
 	bool check_intersect(TraceRecord &rec);
 	Vec4 shade(TraceRecord &rec);
+	Vec4 trace(Ray &ray);
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include "shade.hpp"
 #include "trace_record.hpp"
 #include "object.hpp"
+#include "ray.hpp"
 #include "macro.hpp"
 
 using namespace std;
@@ -48,4 +49,22 @@ Vec4 Shade::specular(void)
 		light_intensity[1] * rec.obj->color[1] * r_dot_d,
 		light_intensity[2] * rec.obj->color[2] * r_dot_d
 	});
+}
+
+float Shade::shadow(Object **objs, int num_objs)
+{
+	Ray shadow_ray(
+		rec.point + BIAS * rec.normal,
+		-1.0f * light_direction
+	);
+	float t;
+	float res;
+
+	res = 1.0f;
+	while (num_objs--)
+	{
+		if (objs[num_objs]->intersect(shadow_ray, t) && t < light_distance)
+			res *= objs[num_objs]->transparency;
+	}
+	return (res);
 }

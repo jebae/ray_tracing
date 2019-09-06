@@ -7,6 +7,7 @@
 # define MLX_BPP		32
 # define MLX_ENDIAN		0
 # define FLOAT_APPROX_0	1e-6f
+# define BIAS			1e-3f
 
 # define ABS(X) ((X < 0) ? -(X) : (X))
 # define MAX(X, Y) ((X > Y) ? (X) : (Y))

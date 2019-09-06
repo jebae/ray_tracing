@@ -30,14 +30,15 @@ int main(void)
 	test_ray.all();
 
 	// trace
-	TestTracer test_tracer(true);
+	TestTracer test_tracer;
 	TestTraceRecord test_trace_record;
 
 	test_tracer.all();
+	//test_tracer.test_trace_case1();
 	test_trace_record.all();
 
 	// shade
-	TestShade test_shade;
+	TestShade test_shade(true);
 
 	test_shade.all();
 

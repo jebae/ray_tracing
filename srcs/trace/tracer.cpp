@@ -42,14 +42,28 @@ bool Tracer::check_intersect(TraceRecord &rec)
 
 Vec4 Tracer::shade(TraceRecord &rec)
 {
-	Vec4 res = Shade::ambient(rec.obj->color, AMBIENT_INTENSITY);
+	Vec4 res;
+	Vec4 shade_per_light;
 
 	for (int i=0; i < num_lights; i++)
 	{
 		Shade shade(rec, lights[i]);
 
-		res += shade.diffuse();
-		res += shade.specular();
+		shade_per_light = shade.diffuse();
+		shade_per_light += shade.specular();
+		shade_per_light *= shade.shadow(objs, num_objs);
+		res += shade_per_light;
 	}
+	res += Shade::ambient(rec.obj->color, AMBIENT_INTENSITY);
 	return (res);
+}
+
+Vec4 Tracer::trace(Ray &ray)
+{
+	TraceRecord rec(ray);
+	Vec4 rgb;
+
+	if (check_intersect(rec))
+		rgb = shade(rec);
+	return (rgb);
 }

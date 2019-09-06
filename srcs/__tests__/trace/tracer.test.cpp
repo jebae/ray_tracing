@@ -15,6 +15,7 @@ public:
 	Sphere *create_test_sphere(float radius, Vec4 center);
 	void test_check_intersect_case1(void);
 	void test_shade_case1(void);
+	void test_trace_case1(void); // using mlx
 	void all(void);
 };
 
@@ -31,7 +32,7 @@ Sphere* TestTracer::create_test_sphere(
 	float reflectivity = 0.3f;
 	float transparency = 0.2f;
 	float ior = 1.5f;
-	Vec4 color(vector<float>{0.4f, 0.4f, 0.4f});
+	Vec4 color(vector<float>{0.4f, 0.4f, 0.8f});
 
 	return (new Sphere(
 		specular_alpha,
@@ -106,7 +107,7 @@ void TestTracer::test_shade_case1(void)
 		Vec4(vector<float>{0.5f, 1.0f, -1.0f})
 	);
 	SphericalLight spherical_light(
-		Vec4(vector<float>{100, 100, 100}),
+		Vec4(vector<float>{0.8f, 0.8f, 0.8f}),
 		Vec4(vector<float>{0.0f, 0.0f, 0.0f})
 	);
 	Light *lights[2] = {
@@ -131,8 +132,108 @@ void TestTracer::test_shade_case1(void)
 
 		expected += shade.diffuse();
 		expected += shade.specular();
+		// skip shadow
 	}
 	eq(res, expected);
+}
+
+void TestTracer::test_trace_case1(void)
+{
+	set_subject("tracer.trace has to show shaded image");
+	// set ray grid
+	float width = 1000;
+	float height = 800;
+	Camera cam(
+		Vec4(vector<float>{0.0f, -4.0f, 0.0f}),
+		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
+	);
+	RayGridProps props(cam, width, height);
+
+	// set objects
+	Plane plane(
+		50,
+		0.3f,
+		0.2f,
+		1.5,
+		Vec4(vector<float>{0.2f, 0.6f, 0.2f}),
+		Vec4(vector<float>{0.0f, 0.0f, -1.0f}),
+		Vec4(vector<float>{0.0f, 0.0f, -1.0f})
+	);
+	Sphere sphere(
+		50,
+		0.3f,
+		0.2f,
+		1.5,
+		Vec4(vector<float>{0.7f, 0.1f, 0.2f}),
+		1.0f,
+		Vec4(vector<float>{0.0f, 3.0f, 0.5f})
+	);
+	Cone cone(
+		50,
+		0.3f,
+		0.2f,
+		1.5,
+		Vec4(vector<float>{0.2f, 0.5f, 0.3f}),
+		Vec4(vector<float>{-1.0f, 2.0f, 0.5f}), // vertex
+		Vec4(vector<float>{-1.0f, 0.5f, 0.5f}), // prep_vec
+		2.0f, // height
+		M_PI / 6.0f // theta
+	);
+	Cylinder cylinder(
+		50,
+		0.3f,
+		0.2f,
+		1.5,
+		Vec4(vector<float>{0.2f, 0.3f, 0.8f}),
+		0.8f, // radius
+		2.0f, // height
+		Vec4(vector<float>{1.0f, 4.0f, 2.0f}), // center
+		Vec4(vector<float>{1.0f, -0.5f, -1.5f}) // prep_vec
+	);
+	Object *objs[4] = {
+		static_cast<Object *>(&plane),
+		static_cast<Object *>(&sphere),
+		static_cast<Object *>(&cone),
+		static_cast<Object *>(&cylinder)
+	};
+
+	// set lights
+	DistantLight distant_light(
+		Vec4(vector<float>{0.8f, 0.8f, 0.8f}),
+		Vec4(vector<float>{0.3f, 0.4f, -0.8f})
+	);
+	SphericalLight spherical_light(
+		Vec4(vector<float>{50.0f, 50.0f, 50.0f}),
+		Vec4(vector<float>{0.5f, 1.0f, 3.0f})
+	);
+	int num_lights = 2;
+	Light *lights[2] = {
+		static_cast<Light *>(&distant_light),
+		static_cast<Light *>(&spherical_light)
+	};
+
+	MLXKit mlx((int)width, (int)height);
+	int *img_buf = mlx.get_img_buffer();
+	int color;
+	for (int i=0; i < height; i++)
+	{
+		for (int j=0; j < width; j++)
+		{
+			Ray ray = Ray::get_ray_by_grid_props(props, j, i);
+			Tracer tracer(objs, 4, lights, num_lights);
+
+			Vec4 rgb = tracer.trace(ray);
+			color = 0;
+			color += (rgb[0] >= 1.0f) ? 0xFF : 0xFF * rgb[0];
+			color <<= 8;
+			color += (rgb[1] >= 1.0f) ? 0xFF : 0xFF * rgb[1];
+			color <<= 8;
+			color += (rgb[2] >= 1.0f) ? 0xFF : 0xFF * rgb[2];
+			img_buf[j + (int)width * i] = color;
+		}
+	}
+	mlx.put_img_to_window();
+	mlx.loop();
 }
 
 void TestTracer::all(void)

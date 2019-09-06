@@ -13,6 +13,7 @@ public:
 	void test_ambient_case1(void);
 	void test_diffuse_case1(void);
 	void test_specular_case1(void);
+	void test_shadow_case1(void);
 	void all(void);
 };
 
@@ -142,9 +143,73 @@ void TestShade::test_specular_case1(void)
 	eq(expected, shade.specular());
 }
 
+void TestShade::test_shadow_case1(void)
+{
+	set_subject("shadow has to be returned");
+	// set intersecting object
+	// center : { 0.0f, 2.0f, 0.5f }
+	// radius : 1.0f
+	Sphere hit_obj = create_test_object();
+
+	// set ray
+	Ray ray(
+		Vec4(vector<float>{0.0f, 0.0f, 0.0f}),
+		Vec4(vector<float>{0.1f, 0.9f, 0.5f})
+	);
+
+	// set light
+	SphericalLight light(
+		Vec4(vector<float>{0.8f, 0.8f, 0.8f}),
+		Vec4(vector<float>{0.2f, 0.2f, 7.0f}) // between two planes below
+	);
+
+	// set objects in scene
+	Plane obj1(
+		50,
+		0.0f,
+		0.1f, // transparency
+		1.5f,
+		Vec4(vector<float>{0.1f, 0.3f, 0.6f}), // color
+		Vec4(vector<float>{0.0f, 0.0f, 6.0f}), // point
+		Vec4(vector<float>{0.0f, 0.0f, -1.0f}) // n
+	);
+	Plane obj2(
+		50,
+		0.0f,
+		0.8f, // transparency
+		1.5f,
+		Vec4(vector<float>{0.1f, 0.3f, 0.6f}), // color
+		Vec4(vector<float>{0.0f, 0.0f, 8.0f}), // point
+		Vec4(vector<float>{0.0f, 0.0f, -1.0f}) // n
+	);
+	Object *objs[2] = {
+		static_cast<Object *>(&obj1),
+		static_cast<Object *>(&obj2)
+	};
+	int num_objs = 2;
+
+	TraceRecord rec(ray, &hit_obj);
+	float t;
+
+	// test if intersect exist
+	bool intersect = hit_obj.intersect(ray, t);
+	if (eq(intersect, true) == TEST_FAIL)
+		return ;
+	rec.update_intersect_info(t);
+
+	Shade shade(rec, &light);
+	float res = shade.shadow(objs, num_objs);
+
+	// get expected shadow
+	float expected = obj1.transparency;
+
+	eq(res, expected);
+}
+
 void TestShade::all(void)
 {
 	test_ambient_case1();
 	test_diffuse_case1();
 	test_specular_case1();
+	test_shadow_case1();
 }

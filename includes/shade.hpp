@@ -5,6 +5,7 @@
 # include "light.hpp"
 
 class TraceRecord;
+class Object;
 
 class Shade
 {
@@ -23,6 +24,7 @@ public:
 	);
 	Vec4 diffuse(void);
 	Vec4 specular(void);
+	float shadow(Object **objs, int num_objs);
 };
 
 #endif
