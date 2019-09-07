@@ -18,8 +18,9 @@ public:
 	Ray &ray;
 	Vec4 point;
 	Vec4 normal;
+	TraceRecord *prev;
 
-	TraceRecord(Ray &ray, Object *obj=nullptr);
+	TraceRecord(Ray &ray, TraceRecord *prev, Object *obj=nullptr);
 	void update_intersect_info(float t);
 	friend std::ostream & operator << (std::ostream &os, TraceRecord &rec);
 };

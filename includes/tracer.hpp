@@ -16,6 +16,8 @@ private:
 	Object **objs;
 	Light **lights;
 
+	float get_refract_medium_ior(TraceRecord *rec);
+
 public:
 	Tracer(
 		Object **objs,
@@ -25,8 +27,9 @@ public:
 	);
 	bool check_intersect(TraceRecord &rec);
 	Vec4 shade(TraceRecord &rec);
-	Vec4 trace(Ray &ray, float coeff, int depth);
+	Vec4 trace(Ray &ray, float coeff, int depth, TraceRecord *prev);
 	Ray get_reflection_ray(TraceRecord &rec);
+	Ray get_refraction_ray(TraceRecord &rec);
 };
 
 #endif

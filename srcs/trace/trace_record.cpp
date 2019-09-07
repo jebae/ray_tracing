@@ -5,8 +5,8 @@
 
 using namespace std;
 
-TraceRecord::TraceRecord(Ray &ray, Object *obj)
-: obj(obj), ray(ray)
+TraceRecord::TraceRecord(Ray &ray, TraceRecord *prev, Object *obj)
+: obj(obj), ray(ray), prev(prev)
 {}
 
 ostream& operator << (ostream &os, TraceRecord &rec)

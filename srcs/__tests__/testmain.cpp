@@ -30,7 +30,7 @@ int main(void)
 	test_ray.all();
 
 	// trace
-	TestTracer test_tracer;
+	TestTracer test_tracer(true);
 	TestTraceRecord test_trace_record;
 
 	test_tracer.all();

@@ -61,21 +61,25 @@ Vec4 Tracer::shade(TraceRecord &rec)
 	return (res);
 }
 
-Vec4 Tracer::trace(Ray &ray, float coeff, int depth)
+Vec4 Tracer::trace(Ray &ray, float coeff, int depth, TraceRecord *prev)
 {
-	TraceRecord rec(ray);
+	TraceRecord rec(ray, prev);
 	Vec4 rgb;
 
-	if (!check_intersect(rec))
+	if (coeff <= 0.0f || !check_intersect(rec))
 		return (rgb);
 	rgb = shade(rec);
 	if (depth > MAX_TRACE_DEPTH)
 		return (coeff * rgb);
 	Ray reflection_ray = get_reflection_ray(rec);
-	rgb += trace(reflection_ray, coeff * rec.obj->reflectivity, depth + 1);
-	// get refraction ray
-	// recursion -> trace(refraction_ray, coeff * (1 - rec.obj->reflectivity) * transparency);
-	// sum shade + reflect + refract
+	rgb += trace(reflection_ray, coeff * rec.obj->reflectivity, depth + 1, &rec);
+	Ray refraction_ray = get_refraction_ray(rec);
+	rgb += trace(
+		refraction_ray,
+		coeff * (1.0f - rec.obj->reflectivity) * rec.obj->transparency,
+		depth + 1,
+		&rec
+	);
 	return (coeff * rgb);
 }
 
@@ -85,6 +89,39 @@ Ray Tracer::get_reflection_ray(TraceRecord &rec)
 
 	return Ray(
 		rec.point + BIAS * rec.normal,
-		rec.ray.d + 2.0f * d_dot_n * rec.normal
+		rec.ray.d + 2.0f * d_dot_n * rec.normal,
+		RAY_TYPE_REFLECTION,
+		rec.ray.ior
+	);
+}
+
+float Tracer::get_refract_medium_ior(TraceRecord *rec)
+{
+	TraceRecord *cur = rec->prev;
+
+	while (cur != nullptr)
+	{
+		if (cur->obj == rec->obj &&
+			(cur->ray.type == RAY_TYPE_REFRACTION ||
+			cur->ray.type == RAY_TYPE_ORIGIN))
+			return (cur->ray.ior);
+		cur = cur->prev;
+	}
+	return (rec->obj->ior);
+}
+
+Ray Tracer::get_refraction_ray(TraceRecord &rec)
+{
+	float ior = get_refract_medium_ior(&rec);
+	float snell_ratio = rec.ray.ior / ior;
+	float d_dot_n = -1.0f * rec.ray.d.dot(rec.normal);
+	float det = 1.0f - snell_ratio * snell_ratio * (1.0f - d_dot_n * d_dot_n);
+	Vec4 a = snell_ratio * (rec.ray.d + d_dot_n * rec.normal);
+
+	return Ray(
+		rec.point + (-1.0f) * BIAS * rec.normal,
+		a - sqrtf(det) * rec.normal,
+		RAY_TYPE_REFRACTION,
+		ior
 	);
 }

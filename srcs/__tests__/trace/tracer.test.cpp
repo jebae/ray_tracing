@@ -17,6 +17,7 @@ public:
 	void test_shade_case1(void);
 	void test_trace_case1(void); // using mlx
 	void test_get_reflection_ray_case1(void);
+	void test_get_refraction_ray_case1(void);
 	void all(void);
 };
 
@@ -69,7 +70,7 @@ void TestTracer::test_check_intersect_case1(void)
 		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
 	);
 	Tracer tracer(objs, 3, nullptr, 0);
-	TraceRecord rec(ray);
+	TraceRecord rec(ray, nullptr);
 
 	bool res = tracer.check_intersect(rec);
 	eq(res, true);
@@ -118,7 +119,7 @@ void TestTracer::test_shade_case1(void)
 
 	// set tracer
 	Tracer tracer(&obj, 1, lights, 2);
-	TraceRecord rec(ray);
+	TraceRecord rec(ray, nullptr);
 	bool intersect = tracer.check_intersect(rec);
 
 	if (eq(intersect, true) == TEST_FAIL)
@@ -162,8 +163,8 @@ void TestTracer::test_trace_case1(void)
 	);
 	Sphere sphere(
 		50,
-		0.3f,
-		0.2f,
+		0.0f,
+		0.8f,
 		1.5,
 		Vec4(vector<float>{0.7f, 0.1f, 0.2f}),
 		1.0f,
@@ -223,7 +224,7 @@ void TestTracer::test_trace_case1(void)
 			Ray ray = Ray::get_ray_by_grid_props(props, j, i);
 			Tracer tracer(objs, 4, lights, num_lights);
 
-			Vec4 rgb = tracer.trace(ray, 1.0f, 0);
+			Vec4 rgb = tracer.trace(ray, 1.0f, 0, nullptr);
 			color = 0;
 			color += (rgb[0] >= 1.0f) ? 0xFF : 0xFF * rgb[0];
 			color <<= 8;
@@ -253,7 +254,7 @@ void TestTracer::test_get_reflection_ray_case1(void)
 	);
 
 	// set record
-	TraceRecord rec(ray, sphere);
+	TraceRecord rec(ray, nullptr, sphere);
 	float t;
 	bool intersect = sphere->intersect(ray, t);
 	if (eq(intersect, true) == TEST_FAIL)
@@ -270,11 +271,64 @@ void TestTracer::test_get_reflection_ray_case1(void)
 	float d_dot_n = -1.0f * ray.d.dot(rec.normal);
 	Ray expected(
 		rec.point + BIAS * rec.normal,
-		ray.d + 2.0f * d_dot_n * rec.normal
+		ray.d + 2.0f * d_dot_n * rec.normal,
+		RAY_TYPE_REFLECTION,
+		rec.ray.ior
 	);
 
 	eq(res.d, expected.d);
 	eq(res.e, expected.e);
+	eq(res.type, expected.type);
+	eq(res.ior, expected.ior);
+	delete sphere;
+}
+
+void TestTracer::test_get_refraction_ray_case1(void)
+{
+	set_subject("tracer.get_refraction_ray should return correct refraction ray");
+
+	// set object
+	Sphere *sphere = create_test_sphere(
+		0.5f, Vec4(vector<float>{0.0f, 0.0f, 0.0f})
+	);
+
+	// set ray
+	Ray ray(
+		Vec4(vector<float>{-0.9f, 1.0f, -2.1f}),
+		Vec4(vector<float>{0.8f, -0.9f, 2.0f})
+	);
+
+	// set record
+	TraceRecord rec(ray, nullptr, sphere);
+	float t;
+	bool intersect = sphere->intersect(ray, t);
+	if (eq(intersect, true) == TEST_FAIL)
+		return ;
+	rec.update_intersect_info(t);
+
+	// set tracer
+	Object *sphere_ptr = static_cast<Object *>(sphere);
+	Tracer tracer(&sphere_ptr, 1, nullptr, 0);
+
+	Ray res = tracer.get_refraction_ray(rec);
+
+	// get expected reflection ray
+	float d_dot_n = -1.0f * ray.d.dot(rec.normal);
+	float snell_ratio = ray.ior / rec.obj->ior;
+	float det = 1.0f - snell_ratio * snell_ratio * (1.0f - d_dot_n * d_dot_n);
+	Vec4 a = snell_ratio * (ray.d + d_dot_n * rec.normal);
+
+	Ray expected(
+		rec.point + (-1.0f) * BIAS * rec.normal,
+		a - sqrtf(det) * rec.normal,
+		RAY_TYPE_REFRACTION,
+		rec.obj->ior
+	);
+
+	eq(res.d, expected.d);
+	eq(res.e, expected.e);
+	eq(res.type, expected.type);
+	eq(res.ior, expected.ior);
 	delete sphere;
 }
 
@@ -283,4 +337,5 @@ void TestTracer::all(void)
 	test_check_intersect_case1();
 	test_shade_case1();
 	test_get_reflection_ray_case1();
+	test_get_refraction_ray_case1();
 }

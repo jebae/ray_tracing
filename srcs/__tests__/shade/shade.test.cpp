@@ -76,7 +76,7 @@ void TestShade::test_diffuse_case1(void)
 		Vec4(vector<float>{0.1f, 0.9f, 0.1f})
 	);
 
-	TraceRecord rec(ray, &obj);
+	TraceRecord rec(ray, nullptr, &obj);
 	float t;
 
 	// test if intersect exist
@@ -114,7 +114,7 @@ void TestShade::test_specular_case1(void)
 		Vec4(vector<float>{0.1f, 0.9f, 0.1f})
 	);
 
-	TraceRecord rec(ray, &obj);
+	TraceRecord rec(ray, nullptr, &obj);
 	float t;
 
 	// test if intersect exist
@@ -188,7 +188,7 @@ void TestShade::test_shadow_case1(void)
 	};
 	int num_objs = 2;
 
-	TraceRecord rec(ray, &hit_obj);
+	TraceRecord rec(ray, nullptr, &hit_obj);
 	float t;
 
 	// test if intersect exist

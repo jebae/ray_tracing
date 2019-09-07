@@ -1,4 +1,5 @@
 #include "ray.hpp"
+#include "camera.hpp"
 
 RayGridProps::RayGridProps(
 	Camera &cam,

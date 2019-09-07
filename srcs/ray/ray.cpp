@@ -1,7 +1,7 @@
 #include "ray.hpp"
 
-Ray::Ray(Vec4 e, Vec4 d)
-: e(e), d(d)
+Ray::Ray(Vec4 e, Vec4 d, int type, float ior)
+: type(type), ior(ior), e(e), d(d)
 {}
 
 Vec4 Ray::get_intersect_point(float t)

@@ -3,7 +3,9 @@
 
 # include <cmath>
 # include "vec4.hpp"
-# include "camera.hpp"
+# include "macro.hpp"
+
+class Camera;
 
 class RayGridProps
 {
@@ -24,10 +26,12 @@ public:
 class Ray
 {
 public:
+	int type;
+	float ior; 
 	Vec4 e;
 	Vec4 d;
 
-	Ray(Vec4 e, Vec4 d);
+	Ray(Vec4 e, Vec4 d, int type=RAY_TYPE_ORIGIN, float ior=1.0f);
 	Vec4 get_intersect_point(float t);
 	static Ray get_ray_by_grid_props(
 		RayGridProps &props,
