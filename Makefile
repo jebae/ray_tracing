@@ -57,6 +57,8 @@ SRC_LIGHT = light.cpp\
 	distant_light.cpp\
 	spherical_light.cpp\
 
+SRC_COLOR = color.cpp\
+
 SRC_MLX = mlx_kit.cpp\
 
 # objs
@@ -66,6 +68,7 @@ OBJS += $(addprefix $(OBJDIR)/, $(SRC_OBJECT:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_TRACE:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_SHADE:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_LIGHT:.cpp=.o))
+OBJS += $(addprefix $(OBJDIR)/, $(SRC_COLOR:.cpp=.o))
 OBJS += $(addprefix $(OBJDIR)/, $(SRC_MLX:.cpp=.o))
 
 # compile objs
@@ -83,6 +86,7 @@ HEADERS = $(INCDIR)/vec4.hpp\
 	$(INCDIR)/light.hpp\
 	$(INCDIR)/distant_light.hpp\
 	$(INCDIR)/spherical_light.hpp\
+	$(INCDIR)/color.hpp\
 	$(INCDIR)/mlx_kit.hpp\
 	$(INCDIR)/global.hpp\
 
@@ -102,6 +106,9 @@ $(OBJDIR)/%.o : $(SRCDIR)/shade/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/light/%.cpp $(HEADERS)
+	@$(call compile_obj,$<,$@)
+
+$(OBJDIR)/%.o : $(SRCDIR)/color/%.cpp $(HEADERS)
 	@$(call compile_obj,$<,$@)
 
 $(OBJDIR)/%.o : $(SRCDIR)/mlx/%.cpp $(HEADERS)

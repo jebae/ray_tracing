@@ -5,6 +5,7 @@
 #include "distant_light.hpp"
 #include "spherical_light.hpp"
 #include "shade.hpp"
+#include "color.hpp"
 
 extern Vec4 AMBIENT_INTENSITY;
 
@@ -154,8 +155,8 @@ void TestTracer::test_trace_case1(void)
 	// set objects
 	Plane plane(
 		50,
-		0.3f,
-		0.2f,
+		0.7f,
+		0.0f,
 		1.5,
 		Vec4(vector<float>{0.2f, 0.6f, 0.2f}),
 		Vec4(vector<float>{0.0f, 0.0f, -1.0f}),
@@ -172,8 +173,8 @@ void TestTracer::test_trace_case1(void)
 	);
 	Cone cone(
 		50,
-		0.3f,
-		0.2f,
+		0.0f,
+		0.0f,
 		1.5,
 		Vec4(vector<float>{0.2f, 0.5f, 0.3f}),
 		Vec4(vector<float>{-1.0f, 2.0f, 0.5f}), // vertex
@@ -184,12 +185,12 @@ void TestTracer::test_trace_case1(void)
 	Cylinder cylinder(
 		50,
 		0.3f,
-		0.2f,
+		0.0f,
 		1.5,
 		Vec4(vector<float>{0.2f, 0.3f, 0.8f}),
 		0.8f, // radius
 		2.0f, // height
-		Vec4(vector<float>{1.0f, 4.0f, 2.0f}), // center
+		Vec4(vector<float>{2.0f, 4.0f, 2.0f}), // center
 		Vec4(vector<float>{1.0f, -0.5f, -1.5f}) // prep_vec
 	);
 	Object *objs[4] = {
@@ -216,7 +217,6 @@ void TestTracer::test_trace_case1(void)
 
 	MLXKit mlx((int)width, (int)height);
 	int *img_buf = mlx.get_img_buffer();
-	int color;
 	for (int i=0; i < height; i++)
 	{
 		for (int j=0; j < width; j++)
@@ -225,13 +225,7 @@ void TestTracer::test_trace_case1(void)
 			Tracer tracer(objs, 4, lights, num_lights);
 
 			Vec4 rgb = tracer.trace(ray, 1.0f, 0, nullptr);
-			color = 0;
-			color += (rgb[0] >= 1.0f) ? 0xFF : 0xFF * rgb[0];
-			color <<= 8;
-			color += (rgb[1] >= 1.0f) ? 0xFF : 0xFF * rgb[1];
-			color <<= 8;
-			color += (rgb[2] >= 1.0f) ? 0xFF : 0xFF * rgb[2];
-			img_buf[j + (int)width * i] = color;
+			img_buf[j + (int)width * i] = rgb_vec_to_color(rgb);
 		}
 	}
 	mlx.put_img_to_window();

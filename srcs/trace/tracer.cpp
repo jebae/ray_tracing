@@ -68,7 +68,7 @@ Vec4 Tracer::trace(Ray &ray, float coeff, int depth, TraceRecord *prev)
 
 	if (coeff <= 0.0f || !check_intersect(rec))
 		return (rgb);
-	rgb = shade(rec);
+	rgb = (1.0f - rec.obj->reflectivity) * (1.0f - rec.obj->transparency) * shade(rec);
 	if (depth > MAX_TRACE_DEPTH)
 		return (coeff * rgb);
 	Ray reflection_ray = get_reflection_ray(rec);
