@@ -1,5 +1,4 @@
 # Ray tracing in c++
----
 
 ![ray_tracing](https://www.dropbox.com/s/t0oci4oelv5fmou/ray_tracing.png?raw=1)
 
