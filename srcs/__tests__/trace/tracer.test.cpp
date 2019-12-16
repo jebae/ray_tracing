@@ -144,8 +144,8 @@ void TestTracer::test_trace_case1(void)
 {
 	set_subject("tracer.trace has to show shaded image");
 	// set ray grid
-	float width = 600;
-	float height = 400;
+	float width = 1200;
+	float height = 800;
 	Camera cam(
 		Vec4(vector<float>{0.0f, -4.0f, 0.0f}),
 		Vec4(vector<float>{0.0f, 1.0f, 0.0f})
