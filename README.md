@@ -1,5 +1,7 @@
 # Ray tracing in c++
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e98ad96204d439f9e4345a1923d7e80)](https://www.codacy.com/manual/jebae/ray_tracing?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jebae/ray_tracing&amp;utm_campaign=Badge_Grade)
+
 ![ray_tracing](https://www.dropbox.com/s/t0oci4oelv5fmou/ray_tracing.png?raw=1)
 
 **ray_tracing** is good example to learn basics for ray tracing. In this project we can learn,
